@@ -53,9 +53,8 @@ const TodoList = ({todos, addTodo, setTodos ,deleteTodo ,updateTask}) => {
 const handleDelete = async (event, currentTaskId) => {
   const originalTasks = todos;
   try {
-      const tasks = originalTasks.filter((task)=>task.id !==currentTaskId);
-     setTodos(tasks);
-      deleteTodo(currentTaskId);
+    const tasks = originalTasks.filter((task)=>task.id !==currentTaskId);
+    deleteTodo(currentTaskId);
 
 
   } catch (error) {

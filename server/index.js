@@ -75,9 +75,7 @@ app.post('/todos', cors(corsOptions), (req, res) => {
     res.send({todo: newTodo}).status(200).end()
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
+
 
 
 app.put("/todos :id", async (req, res) => {
@@ -95,16 +93,30 @@ app.put("/todos :id", async (req, res) => {
 
 
 app.delete('/todos/:id',cors(corsOptions), async (req, res) => {
-    console.log('saasaaa');
+    
     try {
-      const task =await Todos.findByIdAndDelete(req.params.id);
+    console.log(req.params.id);
+      const task =Todos.find(task => task.id ==req.params.id);
+      if(task)
+         temp=Todos.filter((element)=>element!==task);
+         console.log(temp);
+        
+         res.send(true);
+        console.log('check');
 
-        res.send(true);
     } catch (error) {
-        res.send(error);
-        console.log('saasaaa');
+        res.status(400).send("task not found");
+        console.log(error);
 
     }
+});
+
+
+
+
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
 });
 
 module.exports = router;
