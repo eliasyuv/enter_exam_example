@@ -41,11 +41,13 @@ const updateTask = (id, task) => {
 
 
   const deleteTodo = (id) => {
-    console.log('delete '+id);
+    console.log(`${baseURL}/todos/${id}`);
     axios.delete(`${baseURL}/todos/${id}`,
     {  withCredentials: true})
       .then((response) => {
-        setTodos(todos.filter((todo) => todo.id !== id));
+      console.log(response);
+
+       setTodos(todos.filter((todo) => todo.id !==id));
         console.log('Todo deleted');
       })
       .catch((error) => {

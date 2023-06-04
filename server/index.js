@@ -22,8 +22,8 @@ app.use(cors({
 const router = express.Router();
 
 const corsOptions = {
-   // origin: `${baseUrl.client}`,
-   origin: 'http://localhost:3000',
+    origin: `${baseUrl.client}`,
+   //origin: 'http://localhost:3000',
 
     credentials: true
 }
@@ -94,14 +94,16 @@ app.put("/todos :id", async (req, res) => {
 
 
 
-app.delete('/todos/:id', async (req, res) => {;
-
+app.delete('/todos/:id',cors(corsOptions), async (req, res) => {
+    console.log('saasaaa');
     try {
-      const task = Todos.findByIdAndDelete(req.params.id);
-    //   res.send(task);
-        //res.delete(task);
+      const task =await Todos.findByIdAndDelete(req.params.id);
+
+        res.send(true);
     } catch (error) {
         res.send(error);
+        console.log('saasaaa');
+
     }
 });
 

@@ -19,7 +19,7 @@ import {
 import { render } from "react-dom";
 
 
-const TodoList = ({todos, addTodo, setTodos ,deleteTodo,updateTask}) => {
+const TodoList = ({todos, addTodo, setTodos ,deleteTodo ,updateTask}) => {
   axios.defaults.withCredentials = true;
   // axios.get('http://localhost:3080/todos', { withCredentials: true });
 
@@ -54,12 +54,11 @@ const handleDelete = async (event, currentTaskId) => {
   const originalTasks = todos;
   try {
       const tasks = originalTasks.filter((task)=>task.id !==currentTaskId);
-      setTodos(tasks);
-      console.log(currentTaskId);
-       deleteTodo(currentTaskId);
+     setTodos(tasks);
+      deleteTodo(currentTaskId);
+
 
   } catch (error) {
-      setTodos(originalTasks);
       console.log(error);
   }
 };
@@ -71,7 +70,6 @@ const handleEdit = async (value, currentTaskId) => {
       const tasks = [...originalTasks];
       const index = tasks.findIndex((task) => task.id === currentTaskId);
       console.log(index);
-
       tasks[index] = { ...tasks[index] };
       console.log(value);
       tasks[index].title=value;
@@ -137,11 +135,8 @@ const handleEdit = async (value, currentTaskId) => {
                 }}
               />
 
-              <Button onClick={(event) =>{ handleDelete(event,todo.id);
-                 fetch(baseURL, {
-                  method: 'DELETE',
-                })
-              }}
+              <Button onClick={(event) =>{ handleDelete(event,todo.id)}}
+        
               >delete
               </Button>
 
