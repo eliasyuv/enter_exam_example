@@ -14,13 +14,17 @@ const port = 3080;
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
-app.use(cors());
-
+//app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:3080'],credentials: true
+  }));
 
 const router = express.Router();
 
 const corsOptions = {
-    origin: `${baseUrl.client}`,
+   // origin: `${baseUrl.client}`,
+   origin: 'http://localhost:3000',
+
     credentials: true
 }
 
@@ -40,7 +44,7 @@ app.get("/user", cors(corsOptions), (req, res) => {
 
 
 
-//The purpose of this code is to handle the GET request to '/todos' and send a response with the Todos data in JSON format. The cors(corsOptions) function is used as middleware to enable Cross-Origin Resource Sharing (CORS) for this route, allowing the client to access the resource from a different domain or port if configured properly
+// handle the GET request to '/todos' and send a response with the Todos data in JSON format. The cors(corsOptions) function is used as middleware to enable Cross-Origin Resource Sharing (CORS) for this route, allowing the client to access the resource from a different domain or port if configured properly
 app.get('/todos', cors(corsOptions), (req, res) => {
     res.send({Todos});
 });
@@ -75,10 +79,11 @@ app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
 
-router.put("/todos :id", async (req, res) => {
+
+app.put("/todos :id", async (req, res) => {
     try {
         const task = await Todos.findOneAndUpdate(
-            { _id: req.params.id },
+            { id: req.params.id },
             req.body
         );
         res.send(task);
@@ -87,14 +92,17 @@ router.put("/todos :id", async (req, res) => {
     }
 });
 
-router.delete("/todos :id", async (req, res) => {
+
+
+app.delete('/todos/:id', async (req, res) => {;
+
     try {
-        const task = await Todos.findByIdAndDelete(req.params.id);
+      const task = Todos.findByIdAndDelete(req.params.id);
+    //   res.send(task);
+        //res.delete(task);
     } catch (error) {
-        console.log(err);
+        res.send(error);
     }
 });
-
-
 
 module.exports = router;

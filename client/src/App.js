@@ -11,9 +11,7 @@ const App = () => {
   const [userId, setUserId] = useState([]);
   const [todos, setTodos] = useState([]);
 
-//    function deleteTask(id) {
-//     return axios.delete(baseURL + "/" + id);
-// }
+
 
 
   useEffect(() => {
@@ -27,6 +25,45 @@ const App = () => {
       .then((response) => setTodos(response.data.Todos))
       .catch((error) => console.error(error));
   };
+
+
+
+
+const updateTask = (id, task) => {
+  axios.put(`${baseURL}/todos/${id}`, task)
+    .then(response => {
+      console.log('Task updated', response.data);
+    })
+    .catch(error => {
+      console.error('Error updating task', error);
+    });
+};
+
+
+  const deleteTodo = (id) => {
+    console.log('delete '+id);
+    axios.delete(`${baseURL}/todos/${id}`,
+    {  withCredentials: true})
+      .then((response) => {
+        setTodos(todos.filter((todo) => todo.id !== id));
+        console.log('Todo deleted');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  // const deleteTodo = (id) => {
+  //   axios
+  //     .delete(`${baseURL}/todos/${id}`)
+  //     .then(() => {
+  //       setTodos(todos.filter((todo) => todo.id !== id));
+  //       console.log('Todo deleted');
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
   const addTodo = (title) => {
     axios
@@ -66,7 +103,7 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={<TodoList todos={todos} addTodo={addTodo} setTodos={setTodos} />}
+            element={<TodoList todos={todos} addTodo={addTodo} setTodos={setTodos} deleteTodo={deleteTodo} updateTask={updateTask}/>}
           />
         </Routes>
       </Router>

@@ -1,7 +1,6 @@
 // TodoList.js
 import React, { useState } from "react";
 import axios from "axios";
-import deleteTask from "./App"
 import "./TodoList.css";
 
 import {
@@ -19,8 +18,10 @@ import {
 } from "@mui/material";
 import { render } from "react-dom";
 
-const TodoList = ({todos, addTodo, setTodos, deleteTask }) => {
+
+const TodoList = ({todos, addTodo, setTodos ,deleteTodo,updateTask}) => {
   axios.defaults.withCredentials = true;
+  // axios.get('http://localhost:3080/todos', { withCredentials: true });
 
   const [newTitle, setNewTitle] = useState([]);
   const [done, setDone] = useState('');
@@ -30,6 +31,7 @@ const TodoList = ({todos, addTodo, setTodos, deleteTask }) => {
   const handleUpdate = async (event, currentTaskId) => {
     const originalTasks = todos;
     try {
+      console.log(event+"1");
         const tasks = [...originalTasks];
         const index = tasks.findIndex((task) => task.id === currentTaskId);
         tasks[index] = { ...tasks[index] };
@@ -41,25 +43,23 @@ const TodoList = ({todos, addTodo, setTodos, deleteTask }) => {
           tasks[index].done=true;
         }
         setTodos(tasks);
+       updateTask(currentTaskId,{done:event.target.value});
     } catch (error) {
         console.log(error);
     }
 };
 
-// function deleteTask(id) {
-//   const baseURL = "http://localhost:3080";
-//   return axios.delete(baseURL + "/" + id);
-// }
 
 const handleDelete = async (event, currentTaskId) => {
   const originalTasks = todos;
   try {
       const tasks = originalTasks.filter((task)=>task.id !==currentTaskId);
-      const index = tasks.findIndex((task) => task.id === currentTaskId);
       setTodos(tasks);
-      deleteTask(currentTaskId);
+      console.log(currentTaskId);
+       deleteTodo(currentTaskId);
 
   } catch (error) {
+      setTodos(originalTasks);
       console.log(error);
   }
 };
